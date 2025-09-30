@@ -178,3 +178,6 @@ secrets
 
 # SpecStory
 .specstory/
+
+# Temporary debug/playground scripts
+playground/
