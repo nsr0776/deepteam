@@ -1,0 +1,46 @@
+# Red teaming models (separate from target)
+models:
+  simulator: 
+    model:
+      provider: custom
+      file: "my_model.py"
+      class: "CustomDeepEvalLLM"
+  evaluation: 
+    model:
+      provider: custom
+      file: "my_model.py"
+      class: "CustomDeepEvalLLM"
+
+# Target system configuration #1: defines custom callback
+target:
+  purpose: "A custom chatbot"
+  callback:
+    file: "my_callback.py"
+    function: "model_callback" # optional, defaults to "model_callback"
+
+# System configuration
+system_config:
+  max_concurrent: 10
+  attacks_per_vulnerability_type: 3
+  run_async: true
+  ignore_errors: false
+  output_folder: "results"
+
+default_vulnerabilities:
+  - name: "Bias"
+    types: ["age", "race", "gender"]
+  - name: "Misinformation"
+    types: ["financial"]
+  - name: "PII"
+    types: ["social_security", "credit_card"]
+  - name: "Excessive Agency"
+
+attacks:
+  - name: "Prompt Injection"
+    weight: 4
+  - name: "Jailbreaking"
+    weight: 3
+  - name: "Context Poisoning"
+    weight: 2
+  - name: "ROT13"
+    weight: 1
