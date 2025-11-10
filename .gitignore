@@ -179,5 +179,8 @@ secrets
 # SpecStory
 .specstory/
 
-# Temporary debug/playground scripts
-playground/
+# Reports generated in testing runs
+playground/deepteam-results/
+
+# Temporary files for local debugging
+playground/tmp/

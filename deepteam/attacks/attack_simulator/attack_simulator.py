@@ -6,7 +6,6 @@ from typing import List, Optional, Union
 import inspect
 from enum import Enum
 
-
 from deepeval.models import DeepEvalBaseLLM
 from deepeval.metrics.utils import initialize_model, trimAndLoadJson
 
@@ -17,6 +16,14 @@ from deepteam.attacks.multi_turn.types import CallbackType
 from deepteam.attacks.attack_simulator.template import AttackSimulatorTemplate
 from deepteam.attacks.attack_simulator.schema import SyntheticDataList
 
+import logging, sys
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+handler = logging.StreamHandler(sys.stdout)
+handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 class SimulatedAttack(BaseModel):
     vulnerability: str
@@ -439,5 +446,7 @@ class AttackSimulator:
                 return [item.input for item in res.data]
             except TypeError:
                 res = await self.simulator_model.a_generate(prompt)
+                logger.info(f"Trying to load JSON from response: {res}")
+                exit(1)
                 data = trimAndLoadJson(res)
                 return [item["input"] for item in data["data"]]
